@@ -20,7 +20,7 @@ public class WorkTypeService {
     private final AuditHelper audit;
 
     @Transactional(readOnly = true)
-    public List<Dtos.WorkTypeResponse> findAtl() {
+    public List<Dtos.WorkTypeResponse> findAll() {
         return workTypeRepo.findAll().stream().map(this::toResponse).toList();
     }
 

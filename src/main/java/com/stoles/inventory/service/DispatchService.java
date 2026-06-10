@@ -25,7 +25,7 @@ public class DispatchService {
     private final AuditHelper audit;
 
     @Transactional(readOnly = true)
-    public List<Dtos.DispatchResponse> findALl(Long workerId, String search) {
+    public List<Dtos.DispatchResponse> findAll(Long workerId, String search) {
         return dispatchRepo.search(workerId, search).stream().map(this::toResponse).toList();
     }
 
