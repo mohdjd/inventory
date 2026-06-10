@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Dtos {
 
-    //-Auth
+    // - Auth
     @Data @NoArgsConstructor @AllArgsConstructor @Builder
     public static class LoginRequest {
         @NotBlank String username;
@@ -101,7 +101,7 @@ public class Dtos {
         private Integer totalSent;
         private Integer totalReceived;
         private Integer pending;
-        private Long totallobs;
+        private Long totalJobs;
         private BigDecimal totalEarned;
         private BigDecimal totalPaid;
         private BigDecimal outstanding;
@@ -148,9 +148,9 @@ public class Dtos {
         private Long workTypeId;
         private String workTypeName;
         private BigDecimal pricePerPiece;
-        private Integer sentOty;
-        private Integer receivedoty;
-        private Integer pendingOty;
+        private Integer sentQty;
+        private Integer receivedQty;
+        private Integer pendingQty;
         private LocalDate sentDate;
         private LocalDate receivedDate;
         private DispatchStatus status;
