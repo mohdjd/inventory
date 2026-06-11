@@ -44,16 +44,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsSource()))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(new AntPathRequestMatcher("/api/auth/ ** ")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/h2-console/ ** ")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                     .requestMatchers(
                             new AntPathRequestMatcher("/api/dashboard", HttpMethod.GET.name()),
                             new AntPathRequestMatcher("/api/stock", HttpMethod.GET.name()),
-                            new AntPathRequestMatcher("/api/workers/ ** ", HttpMethod.GET.name()),
+                            new AntPathRequestMatcher("/api/workers/**", HttpMethod.GET.name()),
                             new AntPathRequestMatcher("/api/work-types", HttpMethod.GET.name()),
-                            new AntPathRequestMatcher("/api/dispatches/ ** ", HttpMethod.GET.name())
+                            new AntPathRequestMatcher("/api/dispatches/**", HttpMethod.GET.name())
                     ).hasAnyRole("ADMIN", "MANAGER", "ACCOUNT")
-                    .requestMatchers(new AntPathRequestMatcher("/api/users/ ** ")).hasRole("ADMIN")
+                    .requestMatchers(new AntPathRequestMatcher("/api/users/**")).hasRole("ADMIN")
                     .anyRequest().hasAnyRole("ADMIN", "MANAGER", "ACCOUNT")
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -87,7 +87,7 @@ public class SecurityConfig {
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/ ** ", config);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
