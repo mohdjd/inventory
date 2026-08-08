@@ -15,7 +15,7 @@ export default function WorkersTab({ workers, workTypes, workerSummary }) {
                         <div key={w.id} style={S.card}>
 
                             <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12 }}>
-                                <div style={{ width:40, height:40, borderRadius:50, background:"#EEEDFE", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontweight:000, cotor:"#534AB7" }}>
+                                <div style={{ width:40, height:40, borderRadius:50, background:"#EEEDFE", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:600, color:"#534AB7" }}>
                                     {w.name.split(" ").map(x => x[o]).join("").slice(0,2)}
                                 </div>
                                 <div>

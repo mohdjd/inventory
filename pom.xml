@@ -115,7 +115,6 @@
                             <arguments>
                                 <argument>install</argument>
                             </arguments>
-
                         </configuration>
                     </execution>
 
@@ -147,11 +146,12 @@
                         <phase>process-resources</phase>
                         <goals><goal>copy-resources</goal></goals>
                         <configuration>
-
                             <outputDirectory>${project.build.outputDirectory}/frontend/build</outputDirectory>
                             <resources>
-                                <directory>${project.basedir}/frontend/build</directory>
-                                <filtering>false</filtering>
+                                <resource>
+                                    <directory>${project.basedir}/frontend/build</directory>
+                                    <filtering>false</filtering>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>

@@ -48,7 +48,7 @@ export default function DashboardTab({ dashboard, setModal}) {
                                 <div style={{fontSize: 11, color:"#888"}}>{fmtRs(w.totalEarned)} earned - {fmtRs(w.totalPaid)} paid</div>
                             </div>
 
-                            <span style={{fontSize: 12, fontWeight: 600, color:parseFloat(w.outstanding||0 ? "#A32D2D" : "#3B6D11", flexShrink:0 )}}>
+                            <span style={{fontSize: 12, fontWeight: 600, color:parseFloat(w.outstanding||0)>0 ? "#A32D2D" : "#3B6D11", flexShrink:0 }}>
                             {fmtRs(w.outstanding)} due
                             </span>
                         </div>
@@ -61,7 +61,7 @@ export default function DashboardTab({ dashboard, setModal}) {
                              <div  key={d.id} style={{ display:"flex", alignItems: "center", justifyContent:"space-between", paddingBottom:8, marginBottom:8, boarderBottom:"0.05px solid #f0f0f0"}}>
                                 <div>
                                     <div style={{fontSize: 13, fontWeight: 500, color:"#111"}}>{d.workerName}</div>
-                                    <div style={{fontSize: 11, color:"#888"}}>{d.fabric} - {d.workerTypeName)} </div>
+                                    <div style={{fontSize: 11, color:"#888"}}>{d.fabric} - {d.workerTypeName} </div>
                                 </div>
                                 <div style={{textAlign:"right" }}>
                                     <div>{d.quantity} pcs</div>

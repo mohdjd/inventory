@@ -1,4 +1,4 @@
-import { TAB_ICONS } from "./constants";
+import { TAB_ICONS } from "../constants";
 
 export default function Header({ tabs, activeTab, setActiveTab, authUser, role, logout }) {
   return (
