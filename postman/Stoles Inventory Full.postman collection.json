@@ -1,0 +1,492 @@
+{
+  "info": {
+    "_postman_id": "2ec2a13e-c197-4f27-a1bd-1d6d6bd23d51",
+    "name": "Stoles Inventory API - Full",
+    "description": "Complete Postman collection for auth, dashboard, users, stock, workers, work types, dispatches, and payments.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "const data = pm.response.json();",
+                  "if (data && data.token) {",
+                  "  pm.environment.set('token', data.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"newuser123\",\n  \"fullName\": \"New User\",\n  \"role\": \"ACCOUNT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('userId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Toggle User Active",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/toggle-active",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "toggle-active"]
+            }
+          }
+        },
+        {
+          "name": "Reset User Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"newpass123\""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/{{userId}}/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "{{userId}}", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stock",
+      "item": [
+        {
+          "name": "List Stock",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stock", "host": ["{{baseUrl}}"], "path": ["api", "stock"] }
+          }
+        },
+        {
+          "name": "Create Stock",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Lot-A\",\n  \"fabric\": \"Cotton\",\n  \"size\": \"2m\",\n  \"weight\": \"120g\",\n  \"quantity\": 100,\n  \"purchaseDate\": \"2026-06-11\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stock", "host": ["{{baseUrl}}"], "path": ["api", "stock"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('stockId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Stock",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Lot-A-Updated\",\n  \"fabric\": \"Cotton\",\n  \"size\": \"2m\",\n  \"weight\": \"120g\",\n  \"quantity\": 120,\n  \"purchaseDate\": \"2026-06-11\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stock/{{stockId}}", "host": ["{{baseUrl}}"], "path": ["api", "stock", "{{stockId}}"] }
+          }
+        },
+        {
+          "name": "Delete Stock",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/stock/{{stockId}}", "host": ["{{baseUrl}}"], "path": ["api", "stock", "{{stockId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workers",
+      "item": [
+        {
+          "name": "List Workers",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/workers", "host": ["{{baseUrl}}"], "path": ["api", "workers"] }
+          }
+        },
+        {
+          "name": "Worker Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/workers/summary", "host": ["{{baseUrl}}"], "path": ["api", "workers", "summary"] }
+          }
+        },
+        {
+          "name": "Create Worker",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Worker\",\n  \"phone\": \"9999999999\",\n  \"address\": \"City Center\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/workers", "host": ["{{baseUrl}}"], "path": ["api", "workers"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('workerId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Worker",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Worker Updated\",\n  \"phone\": \"8888888888\",\n  \"address\": \"Updated Address\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/workers/{{workerId}}", "host": ["{{baseUrl}}"], "path": ["api", "workers", "{{workerId}}"] }
+          }
+        },
+        {
+          "name": "Delete Worker",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/workers/{{workerId}}", "host": ["{{baseUrl}}"], "path": ["api", "workers", "{{workerId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Work Types",
+      "item": [
+        {
+          "name": "List Work Types",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/work-types", "host": ["{{baseUrl}}"], "path": ["api", "work-types"] }
+          }
+        },
+        {
+          "name": "Create Work Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Work\",\n  \"pricePerPiece\": 22.5\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/work-types", "host": ["{{baseUrl}}"], "path": ["api", "work-types"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('workTypeId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Work Type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Work Updated\",\n  \"pricePerPiece\": 25.75\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/work-types/{{workTypeId}}", "host": ["{{baseUrl}}"], "path": ["api", "work-types", "{{workTypeId}}"] }
+          }
+        },
+        {
+          "name": "Delete Work Type",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/work-types/{{workTypeId}}", "host": ["{{baseUrl}}"], "path": ["api", "work-types", "{{workTypeId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dispatches",
+      "item": [
+        {
+          "name": "List Dispatches",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/dispatches?workerId={{workerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dispatches"],
+              "query": [{ "key": "workerId", "value": "{{workerId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Pending Dispatches",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/dispatches/pending", "host": ["{{baseUrl}}"], "path": ["api", "dispatches", "pending"] }
+          }
+        },
+        {
+          "name": "Create Dispatch",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stockItemId\": {{stockId}},\n  \"workerId\": {{workerId}},\n  \"workTypeId\": {{workTypeId}},\n  \"pricePerPiece\": 22.5,\n  \"sentQty\": 10,\n  \"sentDate\": \"2026-06-11\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/dispatches", "host": ["{{baseUrl}}"], "path": ["api", "dispatches"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('dispatchId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Receive Dispatch",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5,\n  \"receivedDate\": \"2026-06-11\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/dispatches/{{dispatchId}}/receive", "host": ["{{baseUrl}}"], "path": ["api", "dispatches", "{{dispatchId}}", "receive"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "List Payments",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments?workerId={{workerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments"],
+              "query": [{ "key": "workerId", "value": "{{workerId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"workerId\": {{workerId}},\n  \"amount\": 250.0,\n  \"paymentDate\": \"2026-06-11\",\n  \"paymentMode\": \"UPI\",\n  \"referenceNo\": \"TXN-001\",\n  \"remarks\": \"Postman payment\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/payments", "host": ["{{baseUrl}}"], "path": ["api", "payments"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  if (data && data.id) pm.environment.set('paymentId', data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Payment",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/payments/{{paymentId}}", "host": ["{{baseUrl}}"], "path": ["api", "payments", "{{paymentId}}"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "1" },
+    { "key": "stockId", "value": "1" },
+    { "key": "workerId", "value": "1" },
+    { "key": "workTypeId", "value": "1" },
+    { "key": "dispatchId", "value": "1" },
+    { "key": "paymentId", "value": "1" }
+  ]
+}
