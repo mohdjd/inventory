@@ -146,7 +146,7 @@
                         <phase>process-resources</phase>
                         <goals><goal>copy-resources</goal></goals>
                         <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/frontend/build</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/frontend/build</directory>
