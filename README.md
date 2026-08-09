@@ -150,6 +150,48 @@ Main endpoint groups (from `Controllers.java`):
 
 For ready-to-use requests, import the files in `postman/`.
 
+## Testing
+
+Integration tests live in `src/test/java/com/stoles/inventory/integration/` and exercise the full Spring stack (controller → service → repository → security filter chain → JWT) via `MockMvc`. They run against an isolated in-memory H2 database defined in `src/test/resources/application-test.properties` (Spring profile `test`) — separate from the dev file-based H2 database, so tests never touch local data.
+
+### Test classes
+
+| Class                       | Covers                       | Notable scenarios                                                                                                                  |
+|-----------------------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| `AuthIntegrationTest`       | `POST /api/auth/login`       | valid login (admin/manager), unknown user, wrong password, validation errors                                                       |
+| `UserIntegrationTest`       | `/api/users/**` (ADMIN only) | create → toggle-active → reset-password lifecycle (incl. login with the new password), duplicate username, non-admin access denied |
+| `DashboardIntegrationTest`  | `GET /api/dashboard`         | zeroed totals with no data, aggregation across stock/dispatches/payments                                                           |
+| `StockIntegrationTest`      | `/api/stock/**`              | create/list/update/delete lifecycle, validation errors, 404s                                                                       |
+| `WorkerIntegrationTest`     | `/api/workers/**`            | lifecycle, validation errors, worker summary                                                                                       |
+| `WorkTypeIntegrationTest`   | `/api/work-types/**`         | lifecycle, validation errors, 404s                                                                                                 |
+| `DispatchIntegrationTest`   | `/api/dispatches/**`         | default pricing from work type, partial/full receipt flow, rejecting over-receipt and re-receipt of completed dispatches           |
+| `PaymentIntegrationTest`    | `/api/payments/**`           | lifecycle, filtering by worker + date range, unknown worker                                                                        |
+| `InventoryApplicationTests` | application context          | verifies the Spring context loads under the `test` profile                                                                         |
+
+All controller test classes extend `AbstractIntegrationTest`, which provides shared `MockMvc`/repository wiring, a `login()` helper, and `cleanDatabase()`. Because Spring caches one `ApplicationContext` (and one in-memory H2 database) across all test classes in a run, `cleanDatabase()` deletes dispatches and payments before the entities they reference (stock, workers, work types) to avoid FK violations. `app_users` rows are intentionally never deleted between tests, since other entities hold `ON DELETE RESTRICT` FKs to `AppUser.createdBy`/`receivedBy`.
+
+### Running the tests
+
+```bash
+mvn -DskipFrontend=true test
+```
+
+Run a single class:
+
+```bash
+mvn -DskipFrontend=true -Dtest=DispatchIntegrationTest test
+```
+
+## Switch to MySQL (Optional)
+
+In `src/main/resources/application.properties`, comment H2 properties and enable the provided MySQL properties (`spring.datasource.*` and matching dialect), then create your MySQL database before startup.
+
+## Notes
+
+- `ddl-auto=update` is enabled for local development convenience.
+- Change `app.jwt.secret` before any production deployment.
+
+
 ## Switch to MySQL (Optional)
 
 In `src/main/resources/application.properties`, comment H2 properties and enable the provided MySQL properties (`spring.datasource.*` and matching dialect), then create your MySQL database before startup.
