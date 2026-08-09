@@ -44,6 +44,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsSource()))
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                     .requestMatchers(
+                             new AntPathRequestMatcher("/"),
+                             new AntPathRequestMatcher("/index.html"),
+                             new AntPathRequestMatcher("/favicon-ico"),
+                             new AntPathRequestMatcher("/asset-manifest.json"),
+                             new AntPathRequestMatcher("/manifest.json"),
+                             new AntPathRequestMatcher("/static/**"),
+                             new AntPathRequestMatcher("/js/*"),
+                             new AntPathRequestMatcher("/css/*")
+                     ).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                     .requestMatchers(

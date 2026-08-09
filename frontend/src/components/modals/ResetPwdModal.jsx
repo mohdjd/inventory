@@ -15,7 +15,7 @@ export default function ResetPwdModal({ modal, setModal, save }) {
       </FormField>
       <ModalFooter
         onCancel={() => setModal(null)}
-        onSave={() => save(() => api.resetPassword(data.userId, data.password, "Users"))}
+        onSave={() => save(() => api.resetPassword(data.userId, data.password), "Users")}
         saveLabel="Reset Password"
         saveColor="#854F0B"
       />

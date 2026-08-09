@@ -4,7 +4,7 @@ export default function Modal({ title, onClose, children, wide }) {
       <div style={{ background:"#fff", borderRadius:16, padding:"1.5rem", width:"100%", maxWidth: wide ? 680 : 520, maxHeight:"85vh", overflowY:"auto", boxShadow:"0 20px 60px rgba(0,0,0,0.2)" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"1.25rem" }}>
           <h2 style={{ margin:0, fontSize:16, fontWeight:600 }}>{title}</h2>
-          <button onClick={onClose} style={{ background:"none", border:"none", cursor:"pointer", padding:4, color:"#888", fontSize:20 }}>X</button>
+          <button onClick={onClose} style={{ background:"none", border:"none", cursor:"pointer", padding:4, color:"#888", fontSize:20 }}>x</button>
         </div>
         {children}
       </div>

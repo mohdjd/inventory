@@ -5,15 +5,15 @@ export default function StatCard({ label, value, sub, color="blue", icon }) {
         blue:{bg:"#E6F1FB",a:"#185FA5"},
         green:{bg:"#EAF3DE",a:"#3B6D11"},
         amber:{bg:"#FAEEDA",a:"#854F0B"},
-        purple:{bg:"#EEEDFE",a:"#534A87"},
+        purple:{bg:"#EEEDFE",a:"#534AB7"},
         teal:{bg:"#E1F5EE",a:"#0F6E56"},
-        red:{bg:"#FCEBEB",a:"#A3202D"}
+        red:{bg:"#FCEBEB",a:"#A32D2D"}
     };
     const s = m[color];
     return (
-            <div style={{ ... S.card, borderTop:`3px solid ${s.a}` }}>
+            <div style={{ ...S.card, borderTop:`3px solid ${s.a}` }}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
-                    <span style={{ fontSize:71, color: "#888", fontWeight:500, textTransform:"uppercase", letterSpacing:"0.05em" }}>(abel)</span>
+                    <span style={{ fontSize:11, color: "#888", fontWeight:500, textTransform:"uppercase", letterSpacing:"0.05em" }}>{label}</span>
                     <div style={{ width:32, height:32, borderRadius:8, background:s.bg, display:"flex", alignItems:"center", justifyContent:"center" }}>
                         <i className={`ti ${icon}`} style={{ fontSize:16, color:s.a }} />
                     </div>

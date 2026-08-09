@@ -7,26 +7,21 @@ import ModalFooter from "../ui/ModalFooter";
 
 export default function ReceiveModal({ modal, setModal, save, pending }) {
   const { data } = modal;
-  const set = (k, v) => setModal(m => ({ ...m, data: { ...m.data, [k]: v } }));
+  const setF = (k, v) => setModal(m => ({ ...m, data: { ...m.data, [k]: v } }));
 
   return (
     <Modal title="Record Receipt from Worker" onClose={() => setModal(null)}>
       <FormField label="Select Dispatch">
         <SelectField
           value={data.dispatchId}
-          onChange={v => set("dispatchId", v)}
+          onChange={v => setF("dispatchId", v)}
           options={pending.map(d => ({ value: d.id, label: `${d.workerName} - ${d.fabric} - ${d.workTypeName} - Pending: ${d.pendingQty} pcs` }))}
-          placeholder="Select dispatch"
-        />
+          placeholder="Select dispatch" />
       </FormField>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-        <FormField label="Qty Received Now">
-          <InputField type="number" min="1" value={data.quantity} onChange={v => set("quantity", v)} placeholder="pieces" />
-        </FormField>
-        <FormField label="Receipt Date">
-          <InputField type="date" value={data.receivedDate} onChange={v => set("receivedDate", v)} />
-        </FormField>
+        <FormField label="Qty Received Now"><InputField type="number" min="1" value={data.quantity} onChange={v => setF("quantity", v)} placeholder="pieces" /></FormField>
+        <FormField label="Receipt Date"><InputField type="date" value={data.receivedDate} onChange={v => setF("receivedDate", v)} /></FormField>
       </div>
 
       <ModalFooter

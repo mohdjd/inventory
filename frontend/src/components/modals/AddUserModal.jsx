@@ -19,7 +19,7 @@ export default function AddUserModal({ modal, setModal, save }) {
       </div>
       <ModalFooter
         onCancel={() => setModal(null)}
-        onSave={() => save(() => api.createUser(data, "Users"))}
+        onSave={() => save(() => api.createUser(data), "Users")}
         saveLabel="Create User"
       />
     </Modal>

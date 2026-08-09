@@ -23,7 +23,7 @@ export default function LoginScreen({ onLogin }) {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#1a1645 0%,#534AB7 50%,#7C74E0 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+    <div style={{ minHeight:"100vh", background: "linear-gradient(135deg,#1a1645 0%,#534AB7 50%,#7C74E0 100%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
       <div style={{ background: "#fff", borderRadius: 20, padding: "2.5rem", width: "100%", maxWidth: 400, boxShadow: "0 25px 80px rgba(0,0,0,0.3)" }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ width: 56, height: 56, borderRadius: 14, background: "#EEEDFE", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
