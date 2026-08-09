@@ -30,7 +30,7 @@ export default function AccountsTab({
           <div key={w.workerId} style={{ ...S.card, borderLeft: `3px solid ${parseFloat(w.outstanding||0) > 0 ? "#A32D2D" : "#3B6D11"}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
               <div style={{ width: 32, height: 32, borderRadius: 50, background: "#EEEDFE", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 600, color: "#534AB7" }}>
-                {(w.workerName.split(" ")[0].map(x => x[0]).join("")).slice(0, 2)}
+                {w.workerName.split(" ").map(x => x[0]).join("").slice(0, 2)}
               </div>
               <div style={{ fontWeight: 600, fontSize: 13 }}>{w.workerName}</div>
             </div>
@@ -60,7 +60,7 @@ export default function AccountsTab({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
           <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>Payment History</h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <SelectField value={payFilterWId} onChange={e => setPayFilterWId(e.target.value)} options={workers.map(w => ({ value: w.id, label: w.name }))} placeholder="All workers" />
+            <SelectField value={payFilterWId} onChange={setPayFilterWId} options={workers.map(w => ({ value: w.id, label: w.name }))} placeholder="All workers" />
             <input type="date" value={payFromDate} onChange={e => setPayFromDate(e.target.value)} style={{ ...S.input, width: 140 }} />
             <input type="date" value={payToDate} onChange={e => setPayToDate(e.target.value)} style={{ ...S.input, width: 140 }} />
           </div>
@@ -96,7 +96,7 @@ export default function AccountsTab({
         </div>
         {filtPayments.length > 0 && (
           <div style={{ marginTop: 12, padding: "10px 12px", background: "#f9f9f7", borderRadius: 8, display: "flex", justifyContent: "flex-end", gap: 24, fontSize: 13 }}>
-            <span style={{ color: "#888" }}>Total Shown</span>
+            <span style={{ color: "#888" }}>Total Shown:</span>
             <span style={{ fontWeight: 700, color: "#0F6E56" }}>{fmtRs(filtPayments.reduce((a, p) => a + parseFloat(p.amount||0), 0))}</span>
           </div>
         )}
