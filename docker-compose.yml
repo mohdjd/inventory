@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      APP_JWT_SECRET: ${APP_JWT_SECRET:-StOLEsInVeNtOrYsEcReTkEy2024MuStBeAtLeast32CharsLong!}
+      APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+      # Uncomment to point the app at the mysql service below instead of the default H2 file DB.
+      # SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/stoles_db?useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true
+      # SPRING_DATASOURCE_USERNAME: root
+      # SPRING_DATASOURCE_PASSWORD: root
+      # SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      # SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+    volumes:
+      - h2-data:/app/h2database
+    restart: unless-stopped
+
+  # Optional MySQL service. Start with: docker compose --profile mysql up
+  # and uncomment the SPRING_DATASOURCE_* overrides above on the app service.
+  mysql:
+    image: mysql:8.0
+    profiles: ["mysql"]
+    environment:
+      MYSQL_DATABASE: stoles_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  h2-data:
+  mysql-data:

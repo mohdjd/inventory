@@ -181,16 +181,32 @@ Run a single class:
 ```bash
 mvn -DskipFrontend=true -Dtest=DispatchIntegrationTest test
 ```
+## Run with Docker
 
-## Switch to MySQL (Optional)
+Build and run the full stack (frontend bundled into the backend jar) in a single container:
 
-In `src/main/resources/application.properties`, comment H2 properties and enable the provided MySQL properties (`spring.datasource.*` and matching dialect), then create your MySQL database before startup.
+```bash
+docker compose up --build
+```
 
-## Notes
+The app is then available at `http://localhost:8080`. The H2 database file is persisted in the `h2-data` named volume across container restarts. Override secrets/config via environment variables (see `docker-compose.yml`), e.g.:
 
-- `ddl-auto=update` is enabled for local development convenience.
-- Change `app.jwt.secret` before any production deployment.
+```bash
+APP_JWT_SECRET=change-me-in-prod docker compose up --build
+```
 
+To run against MySQL instead of the bundled H2 file DB, start the optional `mysql` service and uncomment the `SPRING_DATASOURCE_*` overrides in `docker-compose.yml`:
+
+```bash
+docker compose --profile mysql up --build
+```
+
+Without Compose, you can build and run the image directly:
+
+```bash
+docker build -t stoles-inventory .
+docker run -p 8080:8080 -v h2-data:/app/h2database stoles-inventory
+```
 
 ## Switch to MySQL (Optional)
 

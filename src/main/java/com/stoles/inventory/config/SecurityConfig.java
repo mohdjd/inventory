@@ -56,6 +56,7 @@ public class SecurityConfig {
                      ).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/actuator/health/**")).permitAll()
                     .requestMatchers(
                             new AntPathRequestMatcher("/api/dashboard", HttpMethod.GET.name()),
                             new AntPathRequestMatcher("/api/stock", HttpMethod.GET.name()),
